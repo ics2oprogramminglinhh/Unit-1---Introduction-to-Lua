@@ -78,24 +78,32 @@ local function AskQuestion()
 	pointsObject.text = "Points" .. " = " .. points
 
 	if (randomOperator == 1) then 
+
+		-- calculate the correct answer
 		correctAnswer = randomNumber1 + randomNumber3
 
 		-- create question in text object
 		questionObject.text = randomNumber1 .. " + " .. randomNumber3 .. " = "
-	end
 
-	if (randomOperator == 2) then
+	-- otherwise, if the random operator is 2, do subtraction
+	elseif (randomOperator == 2) then
 		correctAnswer = randomNumber2 - randomNumber4
 			
 		-- create question in text object 
 		questionObject.text = randomNumber2 .. " - " .. randomNumber4 .. " = "
 	end
-	
+
 	if (randomOperator == 3) then
 			correctAnswer = randomNumber3 * randomNumber4 
 
 		-- create question in text object
 		questionObject.text = randomNumber3 .. " x " .. randomNumber4 .. " = "
+	-- otherwise, if the random operator is 4, do multiplication
+	elseif (randomOperator == 4) then
+		    correctAnswer = randomNumber3 / randomNumber4
+
+		-- create question in text object
+			questionObject.text = randomNumber3 .. "/" .. randomNumber4 .. "="
 	end
 end
 
