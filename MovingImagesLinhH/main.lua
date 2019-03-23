@@ -1,92 +1,70 @@
+----------------------------------------------------------------------------------------
+-- Title: MovingImages
 -- Name: Linh Ho
 -- Course: ICS2O
--- This program displays images that moves when someone 
--- touches the image with their fingers.
+-- This program moves a beetleship across the screen and then makes it fade out,
+-- as well as another object moves in a different direction and speed.
+----------------------------------------------------------------------------------------
 
 -- hide the status bar
 display.setStatusBar(display.HiddenStatusBar)
 
 -- global variables
-scrollSpeed = 1
+scrollSpeed = 3
+goSpeed = 5
 
--- local variables
-
+-- background image with width and height
 local backgroundImage = display.newImageRect("Images/background.png", 2048, 1536)
 
-local blueGirl = display.newImageRect("Images/girl2.png", 150, 150)
-local yellowGirl = display.newImageRect("Images/girl3.png", 150, 150)
+-- character image with width and height
+local beetleship = display.newImageRect("Images/beetleship.png", 200, 200)
 
-local blueGirlWidth = blueGirl.width
-local blueGirlHeight = blueGirl.height
-local yellowGirlWidth = yellowGirl.width
-local yellowGirlHeight = yellowGirl.height
+-- set the image to be transparent
+beetleship.alpha = 0
 
-local soundEffect = audio.loadSound("sound/effect.mp3")
-local soundEffectChannel 
+-- set the initial x and y position of beetleship
+beetleship.x = 300
+beetleship.y = 500
 
--- play background music
-soundEffectChannel = audio.play (soundEffect)
-
-
--- my boolean variables to keep track of which object I touched first
-local alreadyTouchedBlueGirl = false
-local alreadyTouchedYellowGirl = false
-
--- set the initial position of the blue girl
-blueGirl.x = 700
-blueGirl.y = 250
-
-yellowGirl.x = 300
-yellowGirl.y = 250
-
--- Function: BlueGirlListener
--- Input: touch listener
+-- Function: MoveShip
+-- Input: this function accepts an event listener
 -- Output: none
--- Description: when blue girl is touched, move her
-local function BlueGirlListener(touch)
-
-	if (touch.phase == "began") then
-		if (alreadyTouchedYellowGirl == false) then
-			alreadyTouchedBlueGirl = true	
-		end
-	end
-
-	if  ( (touch.phase == "moved") and (alreadyTouchedBlueGirl == true) ) then
-		blueGirl.x = touch.x 
-		blueGirl.y = touch.y
-	end
-
-	if (touch.phase == "ended") then
-		alreadyTouchedBlueGirl = false	
-		alreadyTouchedYellowGirl = false	
-	end
+-- Description: This function adds the scroll speed to the x-value of the ship
+local function MoveShip(event)
+    -- add the scroll speed to the x-value of the ship
+    beetleship.x = beetleship.x + scrollSpeed
+    -- change the transparency of the ship every time it moves so that it fades in
+    beetleship.alpha = beetleship.alpha + 0.01
 end
 
--- add the respective listeners to each object
-blueGirl:addEventListener("touch", BlueGirlListener)
+-- MoveShip will be called at program start over and over 
+Runtime:addEventListener("enterFrame", MoveShip)
 
--- Function: YellowGirlListener
--- Input: touch listener
+-- second character image with width and height
+local octopus = display.newImageRect("Images/octopus.png", 200, 200)
+
+-- set the second image to be transparent
+octopus.alpha = 100
+
+-- set the direction of the octopus
+octopus:scale(-1, 1)
+
+-- set the initial x and y position of octopus
+octopus.x = display.contentWidth/2
+octopus.y = 450
+
+-- Function: MoveSecond
+-- Input: this function accepts an event listener
 -- Output: none
--- Description: when pink girl is touched, move her 
-local function YellowGirlListener(touch)
-
-		if(touch.phase == "began") then
-			if (alreadyTouchedBlueGirl == false) then
-					alreadyTouchedYellowGirl = true
-			end
-		end
-
-		if ((touch.phase == "moved") and (alreadyTouchedYellowGirl == true)) then
-				yellowGirl.x = touch.x
-				yellowGirl.y = touch.y
-		end
-
-		if (touch.phase == "ended") then 
-		alreadyTouchedYellowGirl = false
-		alreadyTouchedBlueGirl = false
-		end
+-- Description: This function adds the scroll speed to the x-value of the ship
+local function MoveSecond(event)
+    -- add the scroll speed to the x-value of the ship
+    octopus.x = octopus.x + goSpeed
+    -- change the transparency of the ship every time it moves so that it fades out
+    octopus.alpha = octopus.alpha + 0.003 - 0.01
+    -- add the scroll speed to the y-value of the ship
+    octopus.y = octopus.y + goSpeed
 end
 
--- add the respective listeners to each project
-yellowGirl: addEventListener("touch", YellowGirlListener)
+-- MoveShip will be called over and over again
+Runtime:addEventListener("enterFrame", MoveSecond)
