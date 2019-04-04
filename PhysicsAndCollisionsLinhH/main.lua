@@ -15,6 +15,13 @@ local physics = require("physics")
 -- start physics
 physics.start()
 
+-------------------------------------------------------------------------------------
+-- Background Music
+-------------------------------------------------------------------------------------
+local backgroundMusic=audio.loadSound("Sounds/backgroundMusic.mp3")
+local backgroundMusicChannel
+
+local backgroundMusic = audio.play(backgroundMusic)
 ----------------------------------------------------------------------------------
 -- Objects
 ----------------------------------------------------------------------------------
@@ -102,12 +109,13 @@ local function firstBall()
 	local ball1 = display.newImage("Physics/super_ball.png", 0, 0)
 
 	-- add to physics
-	physics.addBody(ball1, {density=1.0, friction=0.5, bounce=0.3, radius=30})
+	physics.addBody(ball1, {density=1.0, friction=0.5, bounce=0.3, radius=75})
 
-	-- make it same size
-	ball1:scale(1, 1)
+	-- make it bigger
+	ball1:scale(3, 3)
 end
 
+local backgroundMusic = audio.play(backgroundMusic)
 ----------------------------------------------------------------
 
 -- creating the second ball
@@ -116,7 +124,7 @@ local function secondBall()
 	local ball2 = display.newImage("Physics/super_ball.png", 0, 0)
 
 	-- add to physics
-	physics.addBody(ball2, {density=1.0, friction =0.5, bounce=0.3, radius=12.5})
+	physics.addBody(ball2, {density=1.0, friction =0.5, bounce=0.8, radius=50})
 
 	-- bigger than the original size
 	ball2:scale(2,2)
@@ -130,10 +138,10 @@ end
  	local ball3 = display.newImage("Physics/super_ball.png", 0, 0)
 
  	-- add to physics 
-	physics.addBody(ball3, {density=1.0, friction=0.2, bounce=0.5, radius=25})
+	physics.addBody(ball3, {density=1.0, friction=0.2, bounce=1.0, radius=25})
 
-	-- smaller than orignal size
-	ball3:scale(-1, 1)
+	-- same size
+	ball3:scale(1, 1)
 end
 
 --------------------------------------------------------------
@@ -144,7 +152,7 @@ local function fourthBall()
 	local ball4 = display.newImage("Physics/super_ball.png", 0, 0)
 
 	-- add to physics
-	physics.addBody(ball4, {density=1.0, friction=0.5, bounce=0.3, radius=15.5})
+	physics.addBody(ball4, {density=1.0, friction=0.5, bounce=0.6, radius=12.5})
 
 	-- make it smaller than the original size
 	ball4:scale(0.5,0.5)
