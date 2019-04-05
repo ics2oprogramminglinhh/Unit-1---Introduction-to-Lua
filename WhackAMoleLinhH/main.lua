@@ -24,18 +24,20 @@ bkg.y = 0
 --------------------------------------------------------------------------------
 -- Sounds
 --------------------------------------------------------------------------------
+
 -- play background music
 local backgroundMusic = audio.loadSound("Sounds/background.mp3")
 local backgroundMusicChannel
 backgroundMusicChannel = audio.play(backgroundMusic)
 
--- sound variables
+-- whack sound
 local whack = audio.loadSound("Sounds/whack.mp3")
 local whackChannel
 
 --------------------------------------------------------------------------------
 -- Object Creations and Local Variables
 --------------------------------------------------------------------------------
+
 -- Create the scoreObject and display on the screen
 local score = 0
 local scoreObject
@@ -44,7 +46,7 @@ scoreObject = display.newText("", 180, 50, Arial, 80)
 scoreObject:setTextColor(1, 1, 1)
 scoreObject.text = "Score" .. " = " .. score
 
--- Create the bear
+-- Create the orange
 local orange = display.newImage("Images/orange.png", 0, 0)
 	-- Setting Postition 
 	orange.x = display.contentCenterX
