@@ -1,65 +1,91 @@
 
--- Title: Sound Effects
+-----------------------------------------------------------------------------------------
+-- Title: Buttons in Lua
 -- Name: Linh Ho
 -- Course: ICS2O
--- This program displays an image and has a sound effect.
+-- This program does something when I click on the button.
 -----------------------------------------------------------------------------------------
 
--- hide the status bar
+-- Hide Status Bar
 display.setStatusBar(display.HiddenStatusBar)
 
--- global variables
-scrollSpeed = 4
+-- Set Background Colour
+display.setDefault ("background", 255/255, 173/255, 47/255)
 
--- local variables
+-- Sounds
+local correctSound = audio.loadSound("Sounds/Correct.mp3")
+local correctSoundChannel
 
-local backgroundImage = display.newImageRect("Images/background.png", 2048, 1536)
+-- Create blue button, set its position and make it visible
+local blueButton = display.newImageRect("Images/Fast Button Inactive@2x.png", 198, 96)
+blueButton.x = display.contentWidth/2
+blueButton.y = display.contentWidth/4
+blueButton.inVisible = true
 
-local blueGirl = display.newImageRect("Images/girl2.png", 150, 150)
-local yellowGirl = display.newImageRect("Images/girl3.png", 150, 150)
+-- Create red button, set its position and make it invisible 
+local redButton = display.newImageRect("Images/Fast Button Active@2x.png", 198, 96)
+redButton.x = display.contentWidth/2
+redButton.y = display.contentWidth/4
+redButton.isVisible = false
 
-local blueGirlWidth = blueGirl.width
-local blueGirlHeight = blueGirl.height
-local yellowGirlWidth = yellowGirl.width
-local yellowGirlHeight = yellowGirl.height
+-- Create checkmark button, set its position and make it invisible 
+local checkmark = display.newImageRect("Images/checkmark.png", 200, 200)
+checkmark.x = display.contentWidth/2
+checkmark.y = display.contentWidth/2
+checkmark.isVisible = false
 
-local soundEffect = audio.loadSound("sound/effect.mp3")
-local soundEffectChannel 
+-- Create text object, set its position and make it invisble 
+local textObject = display.newText ("Clicked!", 0, 0, nil, 50)
+textObject.x = display.contentWidth/2
+textObject.y = display.contentWidth/3
+textObject:setTextColor (1, 0, 0.4)
+textObject.isVisible = false
 
--- play background music
-soundEffectChannel = audio.play(soundEffect)
-
-
--- my boolean variables to keep track of which object I touched first
-local alreadyTouchedBlueGirl = false
-local alreadyTouchedYellowGirl = false
-
--- set the initial position of the blue girl
-blueGirl.x = 700
-blueGirl.y = 250
-
-yellowGirl.x = 300
-yellowGirl.y = 250
-
--- Function: BlueGirlListener
+-- Function: BlueButtonListener
 -- Input: touch listener
 -- Output: none
--- Description: when blue girl is touched, move her
-local function BlueGirlListener(touch)
-
+-- Description: When blue button is clicked, it will make the text appear with the red button, 
+-- and make the blue button disappear
+local function BlueButtonListener(touch)
 	if (touch.phase == "began") then
-		if (alreadyTouchedYellowGirl == false) then
-			alreadyTouchedBlueGirl = true	
-		end
+		blueButton.isVisible = false
+		redButton.isVisible = true
+		checkmark.isVisible = true
+		textObject.isVisible = false
 	end
 
-	if  ( (touch.phase == "moved") and (alreadyTouchedBlueGirl == true) ) then
-		blueGirl.x = touch.x 
-		blueGirl.y = touch.y
-	end
-
-	if (touch.phase == "ended") then
-		alreadyTouchedBlueGirl = false	
-		alreadyTouchedYellowGirl = false	
+	if (touch.phase == "ended") then 
+		blueButton.isVisible = true
+		redButton.isVisible = false
+		checkmark.isVisible = false
+		textObject.isVisible = true
+		correctSoundChannel = audio.play(correctSound)
 	end
 end
+
+-- Function: RedButtonListener
+-- Input: touch listener
+-- Output: none
+-- Description: When Red button is clicked, it will make the text appear with the blue button, 
+-- and make the red button disappear
+local function RedButtonListener(touch)
+	if (touch.phase == "began") then
+		redButton.isVisible = false
+		blueButton.isVisible = true
+		checkmark.isVisible = true
+		textObject.isVisible = false
+	end
+
+	if (touch.phase == "ended") then 
+		redButton.isVisible = true
+		blueButton.isVisible = false
+		checkmark.isVisible = false
+		textObject.isVisible = true
+		correctSoundChannel = audio.play(correctSound)
+	end
+end
+
+-- add the respctive listeners to each object
+blueButton:addEventListener("touch", BlueButtonListener)
+redButton:addEventListener("touch", RedButtonListener)
+
